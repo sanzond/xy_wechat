@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="we_company_extend" model="ir.ui.view">
+        <field name="name">we.company.extend</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="mode">primary</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_info']" position="after">
+                <page string="Wechat Enterprise Information" name="wechat_enterprise_information">
+                    <field name="app_ids">
+                        <tree editable="top" create="1" delete="1">
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="corp_id"/>
+                            <field name="corp_secret"/>
+                            <button name="sync_organization" string="Sync Organization" type="object" icon="fa-refresh text-primary"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
