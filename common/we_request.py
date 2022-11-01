@@ -3,8 +3,12 @@ import requests
 from .token_store import TokenStore
 
 
-class WeRequest(object):
+def check_response_error(response, error_code=0, error_msg_key='errmsg'):
+    if response['errcode'] != error_code:
+        raise Exception(response[error_msg_key])
 
+
+class WeRequest(object):
     url_prefix = 'https://qyapi.weixin.qq.com/cgi-bin/'
 
     def __init__(self, corp_id, corp_secret):
@@ -48,9 +52,15 @@ class WeRequest(object):
             'corpid': self.corp_id,
             'corpsecret': self.corp_secret
         })
-        if response['errcode'] != 0:
-            raise Exception(response['errmsg'])
+        check_response_error(response)
         token, expires_in = response['access_token'], response['expires_in']
         self.token_store.save(token, expires_in)
         return token
 
+    def department_simplelist(self, token, id=None):
+        response = self.get_response(f'{self.url_prefix}department/simplelist', {
+            'access_token': token,
+            'id': id
+        })
+        check_response_error(response)
+        return response['department_id']

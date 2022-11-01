@@ -17,3 +17,5 @@ class App(models.Model):
         we_request = WeRequest(self.corp_id, self.corp_secret)
         token = we_request.get_token()
         print(token)
+        department_id = we_request.department_simplelist(token)
+        print(department_id)

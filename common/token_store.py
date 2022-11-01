@@ -19,10 +19,12 @@ class TokenStore(object):
         :param create_time: if create_time is None, use current time
         :return:
         """
+        current_time = time.time()
         token_temp[self.corp_secret] = {
             'token': token,
             'expires_in': expires_in,
-            'create_time': create_time or time.time()
+            'update_time': current_time,
+            'create_time': create_time or current_time
         }
 
     def get(self):
@@ -32,7 +34,7 @@ class TokenStore(object):
         """
         if self.corp_secret in token_temp:
             token = token_temp[self.corp_secret]
-            if time.time() - token['create_time'] > token['expires_in']:
+            if time.time() - token['update_time'] > token['expires_in']:
                 token_temp.pop(self.corp_secret)
                 return None
             return token['token']
