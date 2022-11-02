@@ -25,8 +25,7 @@ class App(models.Model):
         def _sync():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-            loop.run_until_complete(loop.create_task(self.sync_organization()))
-            loop.close()
+            asyncio.run(self.sync_organization())
 
         thread = threading.Thread(target=_sync)
         thread.start()
