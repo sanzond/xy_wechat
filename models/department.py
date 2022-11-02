@@ -9,7 +9,7 @@ class Department(models.Model):
     we_parent_id = fields.Char(string='WE Parent Department ID')
     we_order = fields.Integer(string='WE Order')
 
-    def sync_department(self, we_request, we_app, we_dep_info):
+    async def sync_department(self, we_request, we_app, we_dep_info):
         """
         sync department from wechat enterprise
         :param we_request: WeRequest instance
@@ -17,7 +17,7 @@ class Department(models.Model):
         :param we_dep_info: single dep info from /department/simplelist api
         :return:
         """
-        dep_detail = we_request.department_detail(we_dep_info['id'])
+        dep_detail = await we_request.department_detail(we_dep_info['id'])
         dep = self.search([('we_id', '=', dep_detail['id'])])
         print(dep_detail)
         if not dep:

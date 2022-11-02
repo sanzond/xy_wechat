@@ -1,11 +1,12 @@
-import requests
+import aiohttp
 
 from .token_store import TokenStore
 
 
 def check_response_error(response, error_code=0, error_msg_key='errmsg'):
-    if response['errcode'] != error_code:
-        raise Exception(response[error_msg_key])
+    pass
+    # if response['errcode'] != error_code:
+    #     raise Exception(response[error_msg_key])
 
 
 class WeRequest(object):
@@ -21,49 +22,54 @@ class WeRequest(object):
         self.corp_secret = corp_secret
         self.token_store = TokenStore(corp_secret)
 
-    def refresh_token(self):
+    async def refresh_token(self):
         """
         refresh token if it expires
         :return:
         """
         current_token = self.token_store.get()
         if not current_token:
-            token = self.get_token()
+            token = await self.get_token()
             self.token_store.save(token['token'], token['expires_in'])
 
-    @property
-    def token(self):
-        self.refresh_token()
+    async def latest_token(self):
+        """
+        get latest token
+        :return:
+        """
+        await self.refresh_token()
         return self.token_store.get()
 
     @staticmethod
-    def get_response(url, params=None):
+    async def get_response(url, params=None):
         """
         get response from url
         :param url: url join with url_prefix
         :param params:
         :return:
         """
-        r = requests.get(url, params=params)
-        return r.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                return await response.json()
 
     @staticmethod
-    def post_response(url, data=None):
+    async def post_response(url, data=None):
         """
         post response from url
         :param url: url join with url_prefix
         :param data:
         :return:
         """
-        r = requests.post(url, json=data)
-        return r.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, data=data) as response:
+                return await response.json()
 
-    def get_token(self):
+    async def get_token(self):
         """
         get token from url
         :return:
         """
-        response = self.get_response(f'{self.url_prefix}gettoken', {
+        response = await self.get_response(f'{self.url_prefix}gettoken', {
             'corpid': self.corp_id,
             'corpsecret': self.corp_secret
         })
@@ -73,19 +79,19 @@ class WeRequest(object):
             'expires_in': response['expires_in']
         }
 
-    def department_simplelist(self, id=None):
-        response = self.get_response(f'{self.url_prefix}department/simplelist', {
-            'access_token': self.token,
-            'id': id
+    async def department_simplelist(self, id=None):
+        response = await self.get_response(f'{self.url_prefix}department/simplelist', {
+            'access_token': await self.latest_token(),
+            'id': id or ''
         })
         check_response_error(response)
         return response['department_id']
 
-    def department_detail(self, id):
+    async def department_detail(self, id):
         if not id:
             raise Exception('id is required')
-        response = self.get_response(f'{self.url_prefix}department/get', {
-            'access_token': self.token,
+        response = await self.get_response(f'{self.url_prefix}department/get', {
+            'access_token': await self.latest_token(),
             'id': id
         })
         check_response_error(response)
