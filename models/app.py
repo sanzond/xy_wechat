@@ -1,6 +1,5 @@
-import threading
 import asyncio
-import time
+import threading
 
 from odoo import models, fields, api
 
@@ -17,6 +16,10 @@ class App(models.Model):
     corp_secret = fields.Char(string='Corp Secret', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
 
+    @property
+    def we_request_class(self):
+        return WeRequest
+
     def run_sync(self):
         # create a threading to avoid odoo ui blocking
         def _sync():
@@ -30,18 +33,13 @@ class App(models.Model):
 
     async def sync_organization(self):
         uid = self.env.uid
-        start_time = time.time()
         with self.env.registry.cursor() as new_cr:
             self.env = api.Environment(new_cr, uid, {})
-            we_request = WeRequest(self.corp_id, self.corp_secret)
+            we_request = self.we_request_class(self.corp_id, self.corp_secret)
             departments = await we_request.department_simplelist()
-            print(departments)
             tasks = []
             for dep in departments:
                 tasks.append(self.env['hr.department'].sync_department(we_request, self, dep))
 
-            res = await asyncio.gather(*tasks)
-            print(res)
-            print('finish sync')
-            print(time.time() - start_time)
+            await asyncio.gather(*tasks)
 

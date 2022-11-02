@@ -42,7 +42,7 @@ class WeRequest(object):
     @staticmethod
     async def get_response(url, params=None):
         """
-        get response from url
+        get response from server
         :param url: url join with url_prefix
         :param params:
         :return:
@@ -51,21 +51,9 @@ class WeRequest(object):
             async with session.get(url, params=params) as response:
                 return await response.json()
 
-    @staticmethod
-    async def post_response(url, data=None):
-        """
-        post response from url
-        :param url: url join with url_prefix
-        :param data:
-        :return:
-        """
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, data=data) as response:
-                return await response.json()
-
     async def get_token(self):
         """
-        get token from url
+        get token from server
         :return:
         """
         response = await self.get_response(f'{self.url_prefix}gettoken', {
@@ -79,6 +67,11 @@ class WeRequest(object):
         }
 
     async def department_simplelist(self, id=None):
+        """
+        get department simplelist from server
+        :param id: parent department id, if None, get all department
+        :return:
+        """
         response = await self.get_response(f'{self.url_prefix}department/simplelist', {
             'access_token': await self.latest_token(),
             'id': id or ''
@@ -87,6 +80,11 @@ class WeRequest(object):
         return response['department_id']
 
     async def department_detail(self, id):
+        """
+        get department detail from server
+        :param id: department id, required
+        :return:
+        """
         if not id:
             raise Exception('id is required')
         response = await self.get_response(f'{self.url_prefix}department/get', {
@@ -95,3 +93,18 @@ class WeRequest(object):
         })
         check_response_error(response)
         return response['department']
+
+    async def department_users(self, dep_id):
+        """
+        get department users from server
+        :param dep_id: department id, required
+        :return:
+        """
+        if not dep_id:
+            raise Exception('dep_id is required')
+        response = await self.get_response(f'{self.url_prefix}user/list', {
+            'access_token': await self.latest_token(),
+            'department_id': dep_id
+        })
+        check_response_error(response)
+        return response['userlist']
