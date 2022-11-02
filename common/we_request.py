@@ -4,9 +4,8 @@ from .token_store import TokenStore
 
 
 def check_response_error(response, error_code=0, error_msg_key='errmsg'):
-    pass
-    # if response['errcode'] != error_code:
-    #     raise Exception(response[error_msg_key])
+    if response['errcode'] != error_code:
+        raise Exception(response[error_msg_key])
 
 
 class WeRequest(object):
