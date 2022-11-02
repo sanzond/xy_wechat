@@ -1,3 +1,5 @@
+import threading
+
 from odoo import models, fields, api
 
 from ..common.we_request import WeRequest
@@ -13,9 +15,19 @@ class App(models.Model):
     corp_secret = fields.Char(string='Corp Secret', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
 
+    def run_sync(self):
+        # create a threading to avoid odoo ui blocking
+        thread = threading.Thread(target=self.sync_organization)
+        thread.start()
+
     def sync_organization(self):
-        we_request = WeRequest(self.corp_id, self.corp_secret)
-        token = we_request.get_token()
-        print(token)
-        department_id = we_request.department_simplelist(token)
-        print(department_id)
+        uid = self.env.uid
+        with self.env.registry.cursor() as new_cr:
+            self.env = api.Environment(new_cr, uid, {})
+            we_request = WeRequest(self.corp_id, self.corp_secret)
+            print(we_request)
+            departments = we_request.department_simplelist()
+            for dep in departments:
+                self.env['hr.department'].sync_department(we_request, self, dep)
+            print('finish sync')
+

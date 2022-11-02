@@ -21,6 +21,21 @@ class WeRequest(object):
         self.corp_secret = corp_secret
         self.token_store = TokenStore(corp_secret)
 
+    def refresh_token(self):
+        """
+        refresh token if it expires
+        :return:
+        """
+        current_token = self.token_store.get()
+        if not current_token:
+            token = self.get_token()
+            self.token_store.save(token['token'], token['expires_in'])
+
+    @property
+    def token(self):
+        self.refresh_token()
+        return self.token_store.get()
+
     @staticmethod
     def get_response(url, params=None):
         """
@@ -45,7 +60,7 @@ class WeRequest(object):
 
     def get_token(self):
         """
-        get token from url, token need save to token store
+        get token from url
         :return:
         """
         response = self.get_response(f'{self.url_prefix}gettoken', {
@@ -53,14 +68,25 @@ class WeRequest(object):
             'corpsecret': self.corp_secret
         })
         check_response_error(response)
-        token, expires_in = response['access_token'], response['expires_in']
-        self.token_store.save(token, expires_in)
-        return token
+        return {
+            'token': response['access_token'],
+            'expires_in': response['expires_in']
+        }
 
-    def department_simplelist(self, token, id=None):
+    def department_simplelist(self, id=None):
         response = self.get_response(f'{self.url_prefix}department/simplelist', {
-            'access_token': token,
+            'access_token': self.token,
             'id': id
         })
         check_response_error(response)
         return response['department_id']
+
+    def department_detail(self, id):
+        if not id:
+            raise Exception('id is required')
+        response = self.get_response(f'{self.url_prefix}department/get', {
+            'access_token': self.token,
+            'id': id
+        })
+        check_response_error(response)
+        return response['department']
