@@ -8,7 +8,7 @@
         <field name="priority">2</field>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_info']" position="after">
-                <page string="Wechat Enterprise Information" name="wechat_enterprise_information">
+                <page string="Wechat Enterprise Apps" name="wechat_enterprise_apps">
                     <field name="app_ids">
                         <tree editable="top" create="1" delete="1">
                             <field name="name"/>

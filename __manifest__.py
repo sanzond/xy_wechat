@@ -25,6 +25,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/company.xml',
+        'views/res_config_settings.xml',
     ],
     'application': True
 }

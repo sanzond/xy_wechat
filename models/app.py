@@ -1,5 +1,6 @@
 import asyncio
 import threading
+import time
 
 from odoo import models, fields, api
 
@@ -31,14 +32,16 @@ class App(models.Model):
         thread.start()
 
     async def sync_organization(self):
+        start = time.time()
         uid = self.env.uid
         with self.env.registry.cursor() as new_cr:
-            self.env = api.Environment(new_cr, uid, {})
+            self.env = api.Environment(new_cr, uid, self.env.context)
             we_request = self.we_request_class(self.corp_id, self.corp_secret)
-            departments = await we_request.department_simplelist()
-            tasks = []
-            for dep in departments:
-                tasks.append(self.env['hr.department'].sync_department(we_request, self, dep))
+            config = self.env['res.config.settings'].sudo().get_values()
 
-            await asyncio.gather(*tasks)
+            await self.env['hr.department'].with_context(
+                self.env.context, we_app=self, we_request=we_request,
+                sync_user=config['we_sync_user']
+            ).sync_department()
 
+            print(f'sync complete, cost {time.time() - start}s')

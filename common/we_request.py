@@ -47,7 +47,8 @@ class WeRequest(object):
         :param params:
         :return:
         """
-        async with aiohttp.ClientSession() as session:
+        conn = aiohttp.TCPConnector(ssl=False)
+        async with aiohttp.ClientSession(connector=conn) as session:
             async with session.get(url, params=params) as response:
                 return await response.json()
 
