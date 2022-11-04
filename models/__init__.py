@@ -4,3 +4,4 @@ from . import company
 from . import department
 from . import employee
 from . import res_config_settings
+from . import log

@@ -6,15 +6,18 @@
         <field name="inherit_id" ref="hr.res_config_settings_view_form"/>
         <field name="priority">2</field>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='employees_setting_container']" position="inside">
-                <div class="col-12 col-lg-6 o_setting_box">
-                    <div class="o_setting_left_pane">
-                        <field name="we_sync_user"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="we_sync_user"/>
-                        <div class="text-muted">
+            <xpath expr="//div[@name='employee_rights_setting_container']" position="after">
+                <h2>Wechat Enterprise</h2>
+                <div class="row mt16 o_settings_container" name="wechat_enterprise_setting_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="we_sync_user"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="we_sync_user"/>
+                            <div class="text-muted">
                                 Wechat Enterprise sync with res.user
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wechat_enterprise_log_tree" model="ir.ui.view">
+        <field name="name">wechat.enterprise.log.tree</field>
+        <field name="model">wechat.enterprise.log</field>
+        <field name="arch" type="xml">
+            <tree edit="0" create="0" delete="0">
+                <field name="company_id"/>
+                <field name="we_app_id"/>
+                <field name="create_uid"/>
+                <field name="create_date"/>
+                <field name="detail"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="wechat_enterprise_log_form" model="ir.ui.view">
+        <field name="name">wechat.enterprise.log.form</field>
+        <field name="model">wechat.enterprise.log</field>
+        <field name="arch" type="xml">
+            <form edit="0" create="0" delete="0">
+                <group col="4">
+                    <group colspan="2">
+                        <field name="company_id" options="{'no_open': True, 'no_quick_create': True}"/>
+                        <field name="create_uid"/>
+                    </group>
+                    <group colspan="2">
+                        <field name="we_app_id" options="{'no_open': True, 'no_quick_create': True}"/>
+                        <field name="create_date"/>
+                    </group>
+                    <group colspan="4">
+                        <field name="detail"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="wechat_enterprise_log_act_window" model="ir.actions.act_window">
+        <field name="name">Wechat Enterprise Logs</field>
+        <field name="res_model">wechat.enterprise.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+            id="menu_wechat_enterprise_log"
+            name="Wechat Enterprise Logs"
+            parent="hr.menu_hr_root"
+            groups="base.group_system"
+            action="wechat_enterprise_log_act_window"
+            sequence="99"/>
+</odoo>

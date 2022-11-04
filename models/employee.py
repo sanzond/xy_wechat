@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 
 USER_STATUS = {
     'active': [1, 4],
@@ -104,4 +104,3 @@ class Employee(models.Model):
                 self.create_with_user(create_vals) if sync_user else self.create(create_vals)
         if manager_id:
             we_department.write({'manager_id': self.search([('we_id', '=', manager_id)]).id})
-        print('sync_user complete')
