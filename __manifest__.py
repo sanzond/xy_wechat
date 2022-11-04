@@ -20,7 +20,11 @@
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'hr'],
-
+    'assets': {
+        'web.assets_backend': [
+            'wechat_enterprise/static/src/js/we_qrcode_widget.js',
+        ]
+    },
     # always loaded
     'data': [
         'security/ir.model.access.csv',

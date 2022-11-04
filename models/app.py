@@ -21,11 +21,8 @@ class App(models.Model):
     description = fields.Text(string='Description')
     corp_id = fields.Char(string='Corp ID', required=True)
     corp_secret = fields.Char(string='Corp Secret', required=True)
+    agentid = fields.Char(string='Agent ID', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
-
-    @property
-    def we_request_class(self):
-        return WeRequest
 
     def run_sync(self):
         self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
@@ -52,7 +49,7 @@ class App(models.Model):
 
             detail_log = f'start sync at {get_now_time_str()}......'
             try:
-                we_request = self.we_request_class(self.corp_id, self.corp_secret)
+                we_request = WeRequest(self.corp_id, self.corp_secret)
                 config = self.env['res.config.settings'].sudo().get_values()
 
                 await self.env['hr.department'].with_context(

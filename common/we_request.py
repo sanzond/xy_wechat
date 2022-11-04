@@ -109,3 +109,18 @@ class WeRequest(object):
         })
         check_response_error(response)
         return response['userlist']
+
+    async def get_userid(self, code):
+        """
+        get userid from server
+        :param code: user code by scan qrcode
+        :return:
+        """
+        if not code:
+            raise Exception('code is required')
+        response = await self.get_response(f'{self.url_prefix}auth/getuserinfo', {
+            'access_token': await self.latest_token(),
+            'code': code
+        })
+        check_response_error(response)
+        return response.get('userid', None) or response.get('openid', None)

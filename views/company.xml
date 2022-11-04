@@ -14,6 +14,7 @@
                             <field name="name"/>
                             <field name="description"/>
                             <field name="corp_id"/>
+                            <field name="agentid"/>
                             <field name="corp_secret"/>
                             <button name="run_sync" string="Sync Organization" type="object" icon="fa-refresh text-primary"/>
                         </tree>

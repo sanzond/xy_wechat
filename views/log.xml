@@ -31,6 +31,7 @@
                     <group colspan="4">
                         <field name="detail"/>
                     </group>
+                    <widget name="we_qrcode" app_id="1"/>
                 </group>
             </form>
         </field>
