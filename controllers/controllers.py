@@ -5,7 +5,7 @@ from urllib import parse
 
 from odoo import http
 from odoo.http import route, request
-from ..common.we_request import WeRequest
+from ..common.we_request import we_request_instance
 from ..models.res_users import ResUsers
 from ..common.custom_encrypt import CustomEncrypt
 
@@ -57,7 +57,7 @@ class WechatEnterprise(http.Controller):
         :return:
         """
         app = request.env['wechat.enterprise.app'].sudo().browse(int(app_id))
-        we_request = WeRequest(app.corp_id, app.corp_secret)
+        we_request = we_request_instance(app.corp_id, app.corp_secret)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         get_userid_task = loop.create_task(we_request.get_userid(code))

@@ -121,3 +121,13 @@ class WeRequest(object):
         })
         check_response_error(response)
         return response.get('userid', None) or response.get('openid', None)
+
+
+def we_request_instance(corp_id, corp_secret):
+    """
+    if you want to use custom WeRequest class or Store class, you can set monkey patch to this function
+    :param corp_id:
+    :param corp_secret:
+    :return:
+    """
+    return WeRequest(corp_id, corp_secret)

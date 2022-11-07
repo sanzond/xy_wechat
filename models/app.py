@@ -6,7 +6,7 @@ import traceback
 
 from odoo import models, fields, api
 
-from ..common.we_request import WeRequest
+from ..common.we_request import we_request_instance
 
 
 def get_now_time_str():
@@ -51,7 +51,7 @@ class App(models.Model):
 
             detail_log = f'start sync at {get_now_time_str()}......'
             try:
-                we_request = WeRequest(self.corp_id, self.corp_secret)
+                we_request = we_request_instance(self.corp_id, self.corp_secret)
                 config = self.env['res.config.settings'].sudo().get_values()
 
                 await self.env['hr.department'].with_context(
