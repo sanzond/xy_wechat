@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "wechat_enterprise",
+    'name': "Wechat Enterprise",
 
     'summary': """
         module for Wechat Enterprise""",

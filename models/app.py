@@ -5,6 +5,7 @@ import datetime
 import traceback
 
 from odoo import models, fields, api
+from odoo.tools.translate import _
 
 from ..common.we_request import we_request_instance
 
@@ -29,7 +30,7 @@ class App(models.Model):
     def run_sync(self):
         self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
             'title': 'Sync Start......',
-            'message': f'Start sync organization now, please wait......',
+            'message': _('Start sync organization now, please wait......'),
             'warning': True
         })
 
@@ -72,6 +73,6 @@ class App(models.Model):
                 })
                 self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
                     'title': 'Sync End......',
-                    'message': f'Sync organization end, {"success" if is_success else "failed"}',
+                    'message': f'{_("Sync organization end")}, {_("success") if is_success else _("failed")}',
                     'warning': True if is_success else False
                 })

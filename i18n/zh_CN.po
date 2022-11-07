@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-07 08:08+0000\n"
-"PO-Revision-Date: 2022-11-07 08:08+0000\n"
+"POT-Creation-Date: 2022-11-07 08:41+0000\n"
+"PO-Revision-Date: 2022-11-07 08:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__agentid
 msgid "Agent ID"
-msgstr "Agent ID"
+msgstr "应用ID"
 
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__app_ids
@@ -45,11 +45,6 @@ msgstr "配置设置"
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__corp_id
 msgid "Corp ID"
 msgstr "企业ID"
-
-#. module: wechat_enterprise
-#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__secret
-msgid "Secret"
-msgstr "Secret"
 
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__create_uid
@@ -93,7 +88,7 @@ msgstr "员工"
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__id
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app____last_update
@@ -119,6 +114,23 @@ msgid "Name"
 msgstr "名称"
 
 #. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__secret
+msgid "Secret"
+msgstr "Secret"
+
+#. module: wechat_enterprise
+#: code:addons/wechat_enterprise/models/app.py:0
+#, python-format
+msgid "Start sync organization now, please wait......"
+msgstr "开始同步组织架构，请稍候......"
+
+#. module: wechat_enterprise
+#: code:addons/wechat_enterprise/models/app.py:0
+#, python-format
+msgid "Sync End......"
+msgstr "同步完成......"
+
+#. module: wechat_enterprise
 #: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_company_extend
 msgid "Sync Organization"
 msgstr "同步组织架构"
@@ -133,6 +145,7 @@ msgstr "用户"
 msgid "Verify Txt Filename"
 msgstr "网页授权验证文件名"
 
+#. module: hr
 #. module: wechat_enterprise
 #: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_config_settings_extend
 msgid "Wechat Enterprise"
