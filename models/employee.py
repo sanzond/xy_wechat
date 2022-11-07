@@ -1,9 +1,26 @@
+import asyncio
+
 from odoo import models, fields
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
+
+from ..common.we_request import we_request_instance
 
 USER_STATUS = {
     'active': [1, 4],
     'not_active': [2, 5]
 }
+
+
+def send_list_to_str(send_list):
+    """
+    convert send list to str
+    :param send_list: wx_id list or string of @all
+    :return:
+    """
+    if send_list == 'all' or send_list is None:
+        return send_list
+    return '|'.join(send_list)
 
 
 class Employee(models.Model):
@@ -104,3 +121,33 @@ class Employee(models.Model):
                 self.create_with_user(create_vals) if sync_user else self.create(create_vals)
         if manager_id:
             we_department.write({'manager_id': self.search([('we_id', '=', manager_id)]).id})
+
+    def send_we_message(self, app_id, to_users, to_departments=None, msgtype='text', **kwargs):
+        """
+        send message in Wechat Enterprise
+        because sync's info has no tag, so we can't send message to tag, only can send to the single app,
+        the existing parameters are 'to_users', 'to_departments', 'msgtype', 'agentid'
+        :param app_id: wechat enterprise app id used to send message
+        :param to_users: wechat enterprise user we_id list, if to all user, set to '@all'
+        :param to_departments: wechat enterprise department we_id list, if to all department, set to '@all'
+        :param msgtype: message type, reference https://developer.work.weixin.qq.com/document/path/90236
+        :param kwargs: other parameters, reference https://developer.work.weixin.qq.com/document/path/90236
+        :return:
+        """
+        assert app_id, 'app_id is required'
+        if len(to_users) == 0 and len(to_departments) == 0:
+            raise UserError(_('Please select the user or department to send the message!'))
+
+        app = self.env['wechat.enterprise.app'].sudo().browse(int(app_id))
+        we_request = we_request_instance(app.corp_id, app.secret)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        send_message_task = loop.create_task(we_request.send_message(dict(
+            touser=send_list_to_str(to_users),
+            toparty=send_list_to_str(to_departments),
+            msgtype=msgtype,
+            agentid=app.agentid,
+            **kwargs
+        )))
+        loop.run_until_complete(send_message_task)
+        loop.close()

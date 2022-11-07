@@ -5,7 +5,7 @@ from urllib import parse
 
 from odoo import http
 from odoo.http import route, request
-from ..common.we_request import we_request_instance
+from ..common.we_request import we_request_instance, join_url
 from ..models.res_users import ResUsers
 from ..common.custom_encrypt import CustomEncrypt
 
@@ -44,8 +44,8 @@ class WechatEnterprise(http.Controller):
         return {
             'agentid': app.agentid,
             'corp_id': app.corp_id,
-            'redirect_uri': parse.urljoin(host, f'we/oauth2/login/{app_id}') if redirect_uri is None else parse.urljoin(
-                host, redirect_uri)
+            'redirect_uri': join_url(host, f'we/oauth2/login/{app_id}') if redirect_uri is None else
+            join_url(host, redirect_uri)
         }
 
     @route('/we/oauth2/login/<int:app_id>', type='http', auth='public')
@@ -83,6 +83,8 @@ class WechatEnterprise(http.Controller):
         :param scope: snsapi_base or snsapi_privateinfo
         :return:
         """
+        request.env['hr.employee'].send_we_message(1, ['YinChaoQi'], text={'content': '测试消息消息消息'})
+
         oauth2_info = self.get_we_oauth2_info(app_id)
         corp_id = oauth2_info['corp_id']
         agentid = oauth2_info['agentid']

@@ -1,4 +1,5 @@
 import aiohttp
+from urllib import parse
 
 from .token_store import TokenStore
 
@@ -6,6 +7,12 @@ from .token_store import TokenStore
 def check_response_error(response, error_code=0, error_msg_key='errmsg'):
     if response['errcode'] != error_code:
         raise Exception(response[error_msg_key])
+
+
+def join_url(base_url, *args):
+    if not args:
+        return base_url
+    return parse.urljoin(base_url, ''.join(args))
 
 
 class WeRequest(object):
@@ -52,12 +59,25 @@ class WeRequest(object):
             async with session.get(url, params=params) as response:
                 return await response.json()
 
+    @staticmethod
+    async def post_response(url, data):
+        """
+        post response to server
+        :param url: url join with url_prefix
+        :param data:
+        :return:
+        """
+        conn = aiohttp.TCPConnector(ssl=False)
+        async with aiohttp.ClientSession(connector=conn) as session:
+            async with session.post(url, json=data) as response:
+                return await response.json()
+
     async def get_token(self):
         """
         get token from server
         :return:
         """
-        response = await self.get_response(f'{self.url_prefix}gettoken', {
+        response = await self.get_response(join_url(self.url_prefix, 'gettoken'), {
             'corpid': self.corp_id,
             'corpsecret': self.secret
         })
@@ -73,7 +93,7 @@ class WeRequest(object):
         :param id: parent department id, if None, get all department
         :return:
         """
-        response = await self.get_response(f'{self.url_prefix}department/simplelist', {
+        response = await self.get_response(join_url(self.url_prefix, 'department/simplelist'), {
             'access_token': await self.latest_token(),
             'id': id or ''
         })
@@ -87,7 +107,7 @@ class WeRequest(object):
         :return:
         """
         assert id, 'id is required'
-        response = await self.get_response(f'{self.url_prefix}department/get', {
+        response = await self.get_response(join_url(self.url_prefix, 'department/get'), {
             'access_token': await self.latest_token(),
             'id': id
         })
@@ -101,7 +121,7 @@ class WeRequest(object):
         :return:
         """
         assert dep_id, 'dep_id is required'
-        response = await self.get_response(f'{self.url_prefix}user/list', {
+        response = await self.get_response(join_url(self.url_prefix, 'user/list'), {
             'access_token': await self.latest_token(),
             'department_id': dep_id
         })
@@ -115,12 +135,24 @@ class WeRequest(object):
         :return:
         """
         assert code, 'code is required'
-        response = await self.get_response(f'{self.url_prefix}auth/getuserinfo', {
+        response = await self.get_response(join_url(self.url_prefix, 'auth/getuserinfo'), {
             'access_token': await self.latest_token(),
             'code': code
         })
         check_response_error(response)
         return response.get('userid', None) or response.get('openid', None)
+
+    async def send_message(self, message):
+        """
+        send message to user
+        :param message: message dict
+        :return:
+        """
+        assert message and isinstance(message, dict), 'message is required and must be dict'
+        response = await self.post_response(
+            join_url(self.url_prefix, f'message/send?access_token={await self.latest_token()}'), message)
+        check_response_error(response)
+        return response.get('msgid', None)
 
 
 def we_request_instance(corp_id, secret):
