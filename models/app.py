@@ -20,7 +20,7 @@ class App(models.Model):
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
     corp_id = fields.Char(string='Corp ID', required=True)
-    corp_secret = fields.Char(string='Corp Secret', required=True)
+    secret = fields.Char(string='Secret', required=True)
     agentid = fields.Char(string='Agent ID', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     verify_txt_filename = fields.Char(string='Verify Txt Filename', readonly=True)
@@ -51,7 +51,7 @@ class App(models.Model):
 
             detail_log = f'start sync at {get_now_time_str()}......'
             try:
-                we_request = we_request_instance(self.corp_id, self.corp_secret)
+                we_request = we_request_instance(self.corp_id, self.secret)
                 config = self.env['res.config.settings'].sudo().get_values()
 
                 await self.env['hr.department'].with_context(

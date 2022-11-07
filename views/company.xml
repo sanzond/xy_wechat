@@ -17,7 +17,7 @@
                             <field name="agentid"/>
                             <!--     need this field, if not can not save filename     -->
                             <field name="verify_txt_filename" invisible="1"/>
-                            <field name="corp_secret"/>
+                            <field name="secret"/>
                             <button name="run_sync" string="Sync Organization" type="object" icon="fa-refresh text-primary"/>
                         </tree>
                     </field>

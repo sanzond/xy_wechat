@@ -11,15 +11,15 @@ def check_response_error(response, error_code=0, error_msg_key='errmsg'):
 class WeRequest(object):
     url_prefix = 'https://qyapi.weixin.qq.com/cgi-bin/'
 
-    def __init__(self, corp_id, corp_secret):
+    def __init__(self, corp_id, secret):
         """
-        set WE corp_id and corp_secret
+        set WE corp_id and secret
         :param corp_id: WE app corp_id
-        :param corp_secret: WE app corp_secret
+        :param secret: WE app secret
         """
         self.corp_id = corp_id
-        self.corp_secret = corp_secret
-        self.token_store = TokenStore(corp_secret)
+        self.secret = secret
+        self.token_store = TokenStore(secret)
 
     async def refresh_token(self):
         """
@@ -59,7 +59,7 @@ class WeRequest(object):
         """
         response = await self.get_response(f'{self.url_prefix}gettoken', {
             'corpid': self.corp_id,
-            'corpsecret': self.corp_secret
+            'corpsecret': self.secret
         })
         check_response_error(response)
         return {
@@ -123,11 +123,11 @@ class WeRequest(object):
         return response.get('userid', None) or response.get('openid', None)
 
 
-def we_request_instance(corp_id, corp_secret):
+def we_request_instance(corp_id, secret):
     """
     if you want to use custom WeRequest class or Store class, you can set monkey patch to this function
     :param corp_id:
-    :param corp_secret:
+    :param secret:
     :return:
     """
-    return WeRequest(corp_id, corp_secret)
+    return WeRequest(corp_id, secret)

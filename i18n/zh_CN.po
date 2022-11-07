@@ -1,0 +1,209 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* wechat_enterprise
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-11-07 08:08+0000\n"
+"PO-Revision-Date: 2022-11-07 08:08+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__agentid
+msgid "Agent ID"
+msgstr "Agent ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__app_ids
+msgid "Apps"
+msgstr "企业微信应用"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_res_company
+msgid "Companies"
+msgstr "公司"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__company_id
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__company_id
+msgid "Company"
+msgstr "公司"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_res_config_settings
+msgid "Config Settings"
+msgstr "配置设置"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__corp_id
+msgid "Corp ID"
+msgstr "企业ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__secret
+msgid "Secret"
+msgstr "Secret"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__create_uid
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__create_uid
+msgid "Created by"
+msgstr "创建人"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__create_date
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__create_date
+msgid "Created on"
+msgstr "创建时间"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_hr_department
+msgid "Department"
+msgstr "部门"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__description
+msgid "Description"
+msgstr "说明"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__detail
+msgid "Detail"
+msgstr "详情"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__display_name
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__display_name
+msgid "Display Name"
+msgstr "显示名称"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_hr_employee
+msgid "Employee"
+msgstr "员工"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__id
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__id
+msgid "ID"
+msgstr "ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app____last_update
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log____last_update
+msgid "Last Modified on"
+msgstr "最后修改时间"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__write_uid
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__write_uid
+msgid "Last Updated by"
+msgstr "最后更新人"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__write_date
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__write_date
+msgid "Last Updated on"
+msgstr "最后更新时间"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__name
+msgid "Name"
+msgstr "名称"
+
+#. module: wechat_enterprise
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_company_extend
+msgid "Sync Organization"
+msgstr "同步组织架构"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_res_users
+msgid "User"
+msgstr "用户"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__verify_txt_filename
+msgid "Verify Txt Filename"
+msgstr "网页授权验证文件名"
+
+#. module: wechat_enterprise
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_config_settings_extend
+msgid "Wechat Enterprise"
+msgstr "企业微信"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_wechat_enterprise_app
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_app_id
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_app_id
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__we_app_id
+msgid "Wechat Enterprise App"
+msgstr "企业微信应用"
+
+#. module: wechat_enterprise
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_company_extend
+msgid "Wechat Enterprise Apps"
+msgstr "企业微信应用"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_id
+msgid "Wechat Enterprise Department ID"
+msgstr "企业微信部门ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_order
+msgid "Wechat Enterprise Department Order"
+msgstr "企业微信部门排序"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_department_ids
+msgid "Wechat Enterprise Departments"
+msgstr "企业微信部门"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_employee_ids
+msgid "Wechat Enterprise Employees"
+msgstr "企业微信员工"
+
+#. module: wechat_enterprise
+#: model:ir.model,name:wechat_enterprise.model_wechat_enterprise_log
+msgid "Wechat Enterprise Log"
+msgstr "企业微信日志"
+
+#. module: wechat_enterprise
+#: model:ir.actions.act_window,name:wechat_enterprise.wechat_enterprise_log_act_window
+#: model:ir.ui.menu,name:wechat_enterprise.menu_wechat_enterprise_log
+msgid "Wechat Enterprise Logs"
+msgstr "企业微信模块日志"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_parent_id
+msgid "Wechat Enterprise Parent Department ID"
+msgstr "企业微信父部门ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_extattr
+msgid "Wechat Enterprise User Extattr"
+msgstr "企业微信用户扩展属性"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_id
+msgid "Wechat Enterprise User ID"
+msgstr "企业微信用户ID"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_res_config_settings__we_sync_user
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_config_settings_extend
+msgid "Wechat Enterprise sync with res.user"
+msgstr "同步企业微信用户到res.user"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__verify_txt
+msgid "verify_txt"
+msgstr "网页授权验证文件"

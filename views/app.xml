@@ -13,7 +13,7 @@
 
                     <group colspan="2">
                         <field name="agentid"/>
-                        <field name="corp_secret"/>
+                        <field name="secret"/>
                     </group>
 
                     <group colspan="4">

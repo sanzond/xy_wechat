@@ -57,7 +57,7 @@ class WechatEnterprise(http.Controller):
         :return:
         """
         app = request.env['wechat.enterprise.app'].sudo().browse(int(app_id))
-        we_request = we_request_instance(app.corp_id, app.corp_secret)
+        we_request = we_request_instance(app.corp_id, app.secret)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         get_userid_task = loop.create_task(we_request.get_userid(code))
