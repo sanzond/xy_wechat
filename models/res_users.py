@@ -6,7 +6,7 @@ from ..common.custom_encrypt import CustomEncrypt
 
 class ResUsers(models.Model):
     _inherit = 'res.users'
-    _we_auth_secret = 'RZDeROZp'
+    we_auth_secret = 'RZDeROZp'
 
     def _check_credentials(self, password, env):
         """
@@ -30,5 +30,5 @@ class ResUsers(models.Model):
         """
         real_password = secret_dict.get('password', None)
         if secret_dict.get('type', None) == 'we':
-            return CustomEncrypt.is_equal(ResUsers._we_auth_secret, real_password)
+            return CustomEncrypt.is_equal(ResUsers.we_auth_secret, real_password)
         return False

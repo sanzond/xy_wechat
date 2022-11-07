@@ -27,7 +27,7 @@ class WEQrcode extends Component {
 
         useEffect(async () => {
             // to safety, we can not request by search_read, so we use rpc
-            const app = await this.rpc('/we/qrcode', {
+            const app = await this.rpc('/we/oauth2/info', {
                 app_id: this.props.appId,
                 context: {'aaaaa': 222}
             })
@@ -36,7 +36,7 @@ class WEQrcode extends Component {
                 "id": "wx_reg",
                 "appid": app.corp_id,
                 "agentid": app.agentid,
-                "redirect_uri": encodeURIComponent(`${window.location.origin}/we/qrcode/login/${this.props.appId}`),
+                "redirect_uri": encodeURIComponent(app.redirect_uri),
             });
         }, () => [])
     }
