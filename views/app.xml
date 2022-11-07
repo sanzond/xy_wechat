@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wechat_enterprise_app_form" model="ir.ui.view">
+        <field name="name">wechat.enterprise.app.form</field>
+        <field name="model">wechat.enterprise.app</field>
+        <field name="arch" type="xml">
+            <form delete="0">
+                <group col="4">
+                    <group colspan="2">
+                        <field name="name"/>
+                        <field name="corp_id"/>
+                    </group>
+
+                    <group colspan="2">
+                        <field name="agentid"/>
+                        <field name="corp_secret"/>
+                    </group>
+
+                    <group colspan="4">
+                        <field name="verify_txt" filename="verify_txt_filename"/>
+                        <filed name="verify_txt_filename" invisible="1"/>
+                    </group>
+
+                    <group colspan="4">
+                        <field name="description"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

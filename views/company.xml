@@ -10,11 +10,13 @@
             <xpath expr="//page[@name='general_info']" position="after">
                 <page string="Wechat Enterprise Apps" name="wechat_enterprise_apps">
                     <field name="app_ids">
-                        <tree editable="top" create="1" delete="1">
+                        <tree create="1" delete="1">
                             <field name="name"/>
                             <field name="description"/>
                             <field name="corp_id"/>
                             <field name="agentid"/>
+                            <!--     need this field, if not can not save filename     -->
+                            <field name="verify_txt_filename" invisible="1"/>
                             <field name="corp_secret"/>
                             <button name="run_sync" string="Sync Organization" type="object" icon="fa-refresh text-primary"/>
                         </tree>

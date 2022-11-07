@@ -23,6 +23,8 @@ class App(models.Model):
     corp_secret = fields.Char(string='Corp Secret', required=True)
     agentid = fields.Char(string='Agent ID', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
+    verify_txt_filename = fields.Char(string='Verify Txt Filename', readonly=True)
+    verify_txt = fields.Binary('verify_txt')
 
     def run_sync(self):
         self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {

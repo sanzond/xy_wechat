@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import asyncio
+import base64
 
 from odoo import http
 from odoo.http import route, request
@@ -9,6 +10,23 @@ from ..common.custom_encrypt import CustomEncrypt
 
 
 class WechatEnterprise(http.Controller):
+
+    @http.route('/WW_verify_<string:filename>.txt', type='http', auth="none", methods=['GET'])
+    def load_file(self, filename=None):
+        """
+        load verify file, easily to verify wechat enterprise redirect url
+        :param filename:
+        :return:
+        """
+        app = request.env['wechat.enterprise.app'].sudo().search(
+            [('verify_txt_filename', '=', f'WW_verify_{filename}.txt')],
+            limit=1
+        )
+        if len(app) == 0:
+            content = None
+        else:
+            content = base64.b64decode(app[0].verify_txt).decode('utf-8')
+        return content
 
     @route('/we/qrcode', type='json', auth='public')
     def get_we_qrcode_info(self, app_id):
