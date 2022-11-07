@@ -4,7 +4,7 @@ from odoo import models, fields, api
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    we_sync_user = fields.Boolean(string='Wechat Enterprise sync with res.user', default=False)
+    we_sync_user = fields.Boolean(string='Wechat Enterprise sync with res.user', default=True)
 
     @api.model
     def get_values(self):

@@ -4,6 +4,8 @@ import asyncio
 from odoo import http
 from odoo.http import route, request
 from ..common.we_request import WeRequest
+from ..models.res_users import ResUsers
+from ..common.custom_encrypt import CustomEncrypt
 
 
 class WechatEnterprise(http.Controller):
@@ -26,5 +28,12 @@ class WechatEnterprise(http.Controller):
         loop.run_until_complete(get_userid_task)
         loop.close()
         we_id = get_userid_task.result()
-        # todo: login without password
-        return request.redirect('/web')
+        employee = request.env['hr.employee'].sudo().search([('we_id', '=', we_id)])
+        if employee.user_id.id:
+            secret_dict = {
+                'npa': True,
+                'type': 'we',
+                'password': CustomEncrypt.encrypt(ResUsers._we_auth_secret)
+            }
+            request.session.authenticate(request.session.db, employee.user_id.login, secret_dict)
+            return request.redirect('/web')

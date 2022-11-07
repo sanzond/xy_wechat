@@ -68,7 +68,7 @@ class Department(models.Model):
                 'we_employee_ids': [(5, 0, 0)]
             }
 
-            if not dep:
+            if dep.id is False:
                 dep = self.create(modify_data)
             else:
                 dep.write(modify_data)

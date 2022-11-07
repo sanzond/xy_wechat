@@ -31,7 +31,7 @@ class Employee(models.Model):
     def create_with_user(self, val_list):
         for val in val_list:
             user = self.env['res.users'].search([('login', '=', val['we_id']), ('active', 'in', [True, False])])
-            if user:
+            if user.id is False:
                 val['user_id'] = user.id
             else:
                 user = self.env['res.users'].create({
@@ -58,7 +58,7 @@ class Employee(models.Model):
             # job
             job = self.env['hr.job'].search(
                 [('name', '=', user['position']), ('company_id', '=', we_app.company_id.id)])
-            if not job:
+            if job.id is False:
                 job = self.env['hr.job'].create({
                     'name': user['position'],
                     'company_id': we_app.company_id.id
@@ -81,7 +81,7 @@ class Employee(models.Model):
                 'active': user['status'] in USER_STATUS['active']
             }
 
-            if not employee:
+            if employee.id is False:
                 modify_data['marital'] = False
                 create_users.append(modify_data)
             else:

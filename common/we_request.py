@@ -86,8 +86,7 @@ class WeRequest(object):
         :param id: department id, required
         :return:
         """
-        if not id:
-            raise Exception('id is required')
+        assert id, 'id is required'
         response = await self.get_response(f'{self.url_prefix}department/get', {
             'access_token': await self.latest_token(),
             'id': id
@@ -101,8 +100,7 @@ class WeRequest(object):
         :param dep_id: department id, required
         :return:
         """
-        if not dep_id:
-            raise Exception('dep_id is required')
+        assert dep_id, 'dep_id is required'
         response = await self.get_response(f'{self.url_prefix}user/list', {
             'access_token': await self.latest_token(),
             'department_id': dep_id
@@ -116,8 +114,7 @@ class WeRequest(object):
         :param code: user code by scan qrcode
         :return:
         """
-        if not code:
-            raise Exception('code is required')
+        assert code, 'code is required'
         response = await self.get_response(f'{self.url_prefix}auth/getuserinfo', {
             'access_token': await self.latest_token(),
             'code': code
