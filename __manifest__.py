@@ -2,16 +2,16 @@
 {
     'name': "Wechat Enterprise",
 
-    'summary': """
-        module for Wechat Enterprise""",
+    'summary': 'Wechat Enterprise',
 
     'description': """
         Api and methods for Wechat Enterprise , which is used in Internal Enterprise Applications.
-        Use pycrypto to replace Crypto
+        Use pycrypto to replace Crypto.
+        Need python version >= 3.7
     """,
 
-    'author': "My Company",
-    'website': "https://www.yourcompany.com",
+    'author': "funenc",
+    'website': "https://www.funenc.com",
 
     'external_dependencies': {
         'python': ['aiohttp', 'Crypto'],
@@ -37,5 +37,6 @@
         'views/app.xml',
         'views/log.xml',
     ],
-    'application': True
+    'application': True,
+    'license': 'MIT'
 }

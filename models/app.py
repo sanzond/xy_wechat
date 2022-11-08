@@ -73,7 +73,7 @@ class App(models.Model):
                 })
                 self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
                     'title': 'Sync End......',
-                    'message': f'{_("Sync organization end")}, {_("success") if is_success else _("failed")}',
+                    'message': f'"Sync organization end", {"success" if is_success else "failed"}',
                     'warning': True if is_success else False
                 })
 

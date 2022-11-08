@@ -6,14 +6,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-07 08:41+0000\n"
-"PO-Revision-Date: 2022-11-07 08:41+0000\n"
+"POT-Creation-Date: 2022-11-08 09:36+0000\n"
+"PO-Revision-Date: 2022-11-08 09:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: base
+#: model:ir.module.module,shortdesc:base.module_wechat_enterprise
+#: model:ir.module.module,summary:base.module_wechat_enterprise
+msgid "Wechat Enterprise"
+msgstr "企业微信"
 
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__agentid
@@ -24,6 +30,11 @@ msgstr "应用ID"
 #: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__app_ids
 msgid "Apps"
 msgstr "企业微信应用"
+
+#. module: wechat_enterprise
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_company_extend
+msgid "Callback Settings"
+msgstr "通讯录回调设置"
 
 #. module: wechat_enterprise
 #: model:ir.model,name:wechat_enterprise.model_res_company
@@ -37,11 +48,7 @@ msgid "Company"
 msgstr "公司"
 
 #. module: wechat_enterprise
-#: model:ir.model,name:wechat_enterprise.model_res_config_settings
-msgid "Config Settings"
-msgstr "配置设置"
-
-#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__we_corp_id
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__corp_id
 msgid "Corp ID"
 msgstr "企业ID"
@@ -85,6 +92,11 @@ msgid "Employee"
 msgstr "员工"
 
 #. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__we_cb_encoding_AES_key
+msgid "EncodingAESKey"
+msgstr ""
+
+#. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__id
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__id
 msgid "ID"
@@ -114,9 +126,15 @@ msgid "Name"
 msgstr "名称"
 
 #. module: wechat_enterprise
+#: code:addons/wechat_enterprise/models/employee.py:0
+#, python-format
+msgid "Please select the user or department to send the message!"
+msgstr "请选择发送message的用户或部门！"
+
+#. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__secret
 msgid "Secret"
-msgstr "Secret"
+msgstr ""
 
 #. module: wechat_enterprise
 #: code:addons/wechat_enterprise/models/app.py:0
@@ -125,15 +143,24 @@ msgid "Start sync organization now, please wait......"
 msgstr "开始同步组织架构，请稍候......"
 
 #. module: wechat_enterprise
-#: code:addons/wechat_enterprise/models/app.py:0
-#, python-format
-msgid "Sync End......"
-msgstr "同步完成......"
-
-#. module: wechat_enterprise
 #: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_company_extend
 msgid "Sync Organization"
 msgstr "同步组织架构"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__sync_with_user
+msgid "Sync with res.user"
+msgstr "同步员工到res.user"
+
+#. module: wechat_enterprise
+#: model:ir.model.fields,field_description:wechat_enterprise.field_res_company__we_cb_token
+msgid "Token"
+msgstr ""
+
+#. module: wechat_enterprise
+#: model_terms:ir.ui.view,arch_db:wechat_enterprise.wechat_enterprise_app_form
+msgid "Url Verify Settings"
+msgstr "域名验证设置"
 
 #. module: wechat_enterprise
 #: model:ir.model,name:wechat_enterprise.model_res_users
@@ -145,16 +172,8 @@ msgstr "用户"
 msgid "Verify Txt Filename"
 msgstr "网页授权验证文件名"
 
-#. module: hr
-#. module: wechat_enterprise
-#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_config_settings_extend
-msgid "Wechat Enterprise"
-msgstr "企业微信"
-
 #. module: wechat_enterprise
 #: model:ir.model,name:wechat_enterprise.model_wechat_enterprise_app
-#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_department__we_app_id
-#: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_app_id
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_log__we_app_id
 msgid "Wechat Enterprise App"
 msgstr "企业微信应用"
@@ -209,12 +228,6 @@ msgstr "企业微信用户扩展属性"
 #: model:ir.model.fields,field_description:wechat_enterprise.field_hr_employee__we_id
 msgid "Wechat Enterprise User ID"
 msgstr "企业微信用户ID"
-
-#. module: wechat_enterprise
-#: model:ir.model.fields,field_description:wechat_enterprise.field_res_config_settings__we_sync_user
-#: model_terms:ir.ui.view,arch_db:wechat_enterprise.we_config_settings_extend
-msgid "Wechat Enterprise sync with res.user"
-msgstr "同步企业微信用户到res.user"
 
 #. module: wechat_enterprise
 #: model:ir.model.fields,field_description:wechat_enterprise.field_wechat_enterprise_app__verify_txt
