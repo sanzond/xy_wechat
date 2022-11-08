@@ -97,7 +97,7 @@ class App(models.Model):
 
     def upload_image(self, app_id, file_content, filename):
         """
-        upload image to wechat server
+        upload permanently image to wechat server
         :param app_id: save at which app server
         :param file_content: file content bytes
         :param filename: file name
