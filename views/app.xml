@@ -18,12 +18,14 @@
                     </group>
 
                     <group colspan="4">
-                        <field name="verify_txt" filename="verify_txt_filename"/>
-                        <filed name="verify_txt_filename" invisible="1"/>
+                        <field name="description"/>
                     </group>
 
+                    <h2 style="margin-top: 4px;">Url Verify Settings</h2>
+
                     <group colspan="4">
-                        <field name="description"/>
+                        <field name="verify_txt" filename="verify_txt_filename"/>
+                        <filed name="verify_txt_filename" invisible="1"/>
                     </group>
                 </group>
             </form>

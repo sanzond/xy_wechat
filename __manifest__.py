@@ -7,13 +7,14 @@
 
     'description': """
         Api and methods for Wechat Enterprise , which is used in Internal Enterprise Applications.
+        Use pycrypto to replace Crypto
     """,
 
     'author': "My Company",
     'website': "https://www.yourcompany.com",
 
     'external_dependencies': {
-        'python': ['aiohttp'],
+        'python': ['aiohttp', 'Crypto'],
     },
 
     # Categories can be used to filter modules in modules listing

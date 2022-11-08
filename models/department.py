@@ -69,7 +69,8 @@ class Department(models.Model):
                 dep = self.create(modify_data)
             else:
                 # change where the employee in the department status to active = False
-                self.env['hr.employee'].search([('we_department_ids.we_id', '=', dep_detail['id'])]).write({'active': False})
+                self.env['hr.employee'].search([('we_department_ids.we_id', '=', dep_detail['id'])]).write(
+                    {'active': False})
                 dep.write(modify_data)
 
             await self.env['hr.employee'].sync_user(dep, dep_detail['id'])
@@ -83,3 +84,54 @@ class Department(models.Model):
             tasks.append(_sync_dep(department, False))
 
         await asyncio.gather(*tasks)
+
+    def on_we_create_party(self, xml_tree, company):
+        """
+        on wechat enterprise create department event, only has Id and ParentId, no Name or Other fields
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('Id').text
+        we_parent_id = xml_tree.find('ParentId').text
+        parent_dep = self.sudo().search([('we_id', '=', we_parent_id), ('company_id', '=', company.id)])
+        self.sudo().create({
+            'company_id': company.id,
+            'name': f'we_id_{we_id}',
+            'we_id': we_id,
+            'parent_id': parent_dep.id,
+            'we_parent_id': we_parent_id,
+            'manager_id': False
+        })
+        return 'success'
+
+    def on_we_update_party(self, xml_tree, company):
+        """
+        on wechat enterprise update department event, only has Id and ParentId, no Name or Other fields
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('Id').text
+        we_parent_id = xml_tree.find('ParentId').text
+        dep = self.sudo().search([('we_id', '=', we_id), ('company_id', '=', company.id)])
+        if dep.id is not False:
+            parent_dep = self.sudo().search([('we_id', '=', we_parent_id), ('company_id', '=', company.id)])
+            dep.write({
+                'parent_id': parent_dep.id,
+                'we_parent_id': we_parent_id
+            })
+        return 'success'
+
+    def on_we_delete_party(self, xml_tree, company):
+        """
+        on wechat enterprise delete department event, only has Id and ParentId, no Name or Other fields
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('Id').text
+        dep = self.sudo().search([('we_id', '=', we_id), ('company_id', '=', company.id)])
+        if dep.id is not False:
+            dep.unlink()
+        return 'success'

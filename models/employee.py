@@ -149,3 +149,67 @@ class Employee(models.Model):
         )))
         loop.run_until_complete(send_message_task)
         loop.close()
+
+    def on_we_create_user(self, xml_tree, company):
+        """
+        on wechat enterprise create user event, only has UserID and Department, no Other fields
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('UserID').text
+        # multi dep_id is split by ','
+        we_dep_id = xml_tree.find('Department').text
+        dep_id_list = we_dep_id.split(',')
+        we_departments = self.env['hr.department'].sudo().search(
+            [('we_id', 'in', dep_id_list), ('company_id', '=', company.id)])
+
+        self.sudo().create({
+            'name': f'we_id_{we_id}',
+            'we_id': we_id,
+            'company_id': company.id,
+            # use first department as main department temporarily
+            'department_id': we_departments[0].id if len(we_departments) > 0 else False,
+            'we_department_ids': [(6, 0, we_departments.ids)],
+            'active': True
+        })
+        return 'success'
+
+    def on_we_update_user(self, xml_tree, company):
+        """
+        on wechat enterprise update user event, only has UserID and Department and NewUserId, no Other fields,
+        only trigger when user change department or user_id
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('UserID').text
+        new_we_id = xml_tree.find('NewUserId').text if xml_tree.find('NewUserId') else None
+        # multi dep_id is split by ','
+        we_dep_id = xml_tree.find('Department').text
+        dep_id_list = we_dep_id.split(',')
+        we_departments = self.env['hr.department'].sudo().search(
+            [('we_id', 'in', dep_id_list), ('company_id', '=', company.id)])
+
+        employee = self.sudo().search([('we_id', '=', we_id), ('company_id', '=', company.id)])
+        if employee.id is not False:
+            employee.write({
+                'we_id': new_we_id or we_id,
+                # use first department as main department temporarily
+                'department_id': we_departments[0].id if len(we_departments) > 0 else False,
+                'we_department_ids': [(6, 0, we_departments.ids)]
+            })
+        return 'success'
+
+    def on_we_delete_user(self, xml_tree, company):
+        """
+        on wechat enterprise delete user event, only has UserID, no Other fields
+        :param xml_tree: ET.fromstring(str) instance
+        :param company: receive company
+        :return:
+        """
+        we_id = xml_tree.find('UserID').text
+        employee = self.sudo().search([('we_id', '=', we_id), ('company_id', '=', company.id)])
+        if employee.id is not False:
+            employee.write({'active': False})
+        return 'success'

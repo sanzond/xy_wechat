@@ -2,12 +2,18 @@
 import asyncio
 import base64
 from urllib import parse
+import warnings
+import xml.etree.cElementTree as ET
 
 from odoo import http
 from odoo.http import route, request
 from ..common.we_request import we_request_instance, join_url
 from ..models.res_users import ResUsers
 from ..common.custom_encrypt import CustomEncrypt
+from ..common.callback.WXBizMsgCrypt import WXBizMsgCrypt
+
+# Crypto will show warning, ignore it
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 class WechatEnterprise(http.Controller):
@@ -103,3 +109,37 @@ class WechatEnterprise(http.Controller):
                 scope=scope
             )
         return request.redirect(_redirect_uri, 303, False)
+
+    @route('/we/mail_list/callback', type='http', auth='public', csrf=False)
+    def we_callback(self, msg_signature, timestamp, nonce, echostr=''):
+        if request.httprequest.method == 'GET':
+            result = None
+            company_list = request.env['res.company'].sudo().search([])
+            for company in company_list:
+                if company.we_cb_token and company.we_cb_encoding_AES_key:
+                    wxcpt = WXBizMsgCrypt(company.we_cb_token, company.we_cb_encoding_AES_key, company.we_corp_id)
+                    ret, s_echo_str = wxcpt.VerifyURL(msg_signature, timestamp, nonce, echostr)
+                    if ret == 0:
+                        result = s_echo_str
+                        break
+            return result
+        else:
+            data = request.httprequest.data.decode('utf-8')
+            # get ToUserName to match company corp_id
+            temp_xml_tree = ET.fromstring(data)
+            corp_id = temp_xml_tree.find('ToUserName').text
+            company = request.env['res.company'].sudo().search([('we_corp_id', '=', corp_id)])
+
+            wxcpt = WXBizMsgCrypt(company.we_cb_token, company.we_cb_encoding_AES_key, company.we_corp_id)
+            ret, result = wxcpt.DecryptMsg(data, msg_signature, timestamp, nonce)
+            if ret == 0:
+                xml_tree = ET.fromstring(result)
+                change_type = xml_tree.find('ChangeType').text
+                # change_type may be xxx_user or xxx_party
+                suffix = change_type.split('_')[1]
+                model = request.env['hr.employee'] if suffix == 'user' else request.env['hr.department']
+                # method need return 'success' or empty string
+                func = getattr(model, f'on_we_{change_type}', None)
+                if func:
+                    return func(xml_tree, company)
+            return ''

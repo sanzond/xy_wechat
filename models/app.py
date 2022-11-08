@@ -25,6 +25,7 @@ class App(models.Model):
     agentid = fields.Char(string='Agent ID', required=True)
     sync_with_user = fields.Boolean(string='Sync with res.user', default=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
+    # use in verify url
     verify_txt_filename = fields.Char(string='Verify Txt Filename', readonly=True)
     verify_txt = fields.Binary('verify_txt')
 
