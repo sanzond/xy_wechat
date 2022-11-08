@@ -34,7 +34,6 @@
         'security/ir.model.access.csv',
         'views/company.xml',
         'views/app.xml',
-        'views/res_config_settings.xml',
         'views/log.xml',
     ],
     'application': True

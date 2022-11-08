@@ -9,12 +9,14 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_info']" position="after">
                 <page string="Wechat Enterprise Apps" name="wechat_enterprise_apps">
+                    <group>
+                        <field name="we_corp_id"/>
+                    </group>
                     <field name="app_ids">
                         <tree create="1" delete="1">
                             <field name="name"/>
-                            <field name="description"/>
-                            <field name="corp_id"/>
                             <field name="agentid"/>
+                            <field name="sync_with_user"/>
                             <!--     need this field, if not can not save filename     -->
                             <field name="verify_txt_filename" invisible="1"/>
                             <field name="secret"/>

@@ -9,11 +9,12 @@
                     <group colspan="2">
                         <field name="name"/>
                         <field name="corp_id"/>
+                        <field name="sync_with_user"/>
                     </group>
 
                     <group colspan="2">
                         <field name="agentid"/>
-                        <field name="secret"/>
+                        <field name="secret" password="True"/>
                     </group>
 
                     <group colspan="4">

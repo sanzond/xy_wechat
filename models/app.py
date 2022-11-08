@@ -20,9 +20,10 @@ class App(models.Model):
 
     name = fields.Char(string='Name', required=True)
     description = fields.Text(string='Description')
-    corp_id = fields.Char(string='Corp ID', required=True)
+    corp_id = fields.Char(string='Corp ID', related='company_id.we_corp_id', readonly=True)
     secret = fields.Char(string='Secret', required=True)
     agentid = fields.Char(string='Agent ID', required=True)
+    sync_with_user = fields.Boolean(string='Sync with res.user', default=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     verify_txt_filename = fields.Char(string='Verify Txt Filename', readonly=True)
     verify_txt = fields.Binary('verify_txt')
@@ -53,11 +54,9 @@ class App(models.Model):
             detail_log = f'start sync at {get_now_time_str()}......'
             try:
                 we_request = we_request_instance(self.corp_id, self.secret)
-                config = self.env['res.config.settings'].sudo().get_values()
 
                 await self.env['hr.department'].with_context(
-                    self.env.context, we_app=self, we_request=we_request,
-                    sync_user=config['we_sync_user']
+                    self.env.context, we_app=self, we_request=we_request
                 ).sync_department()
                 detail_log += f'\nsync success!'
             except Exception:
