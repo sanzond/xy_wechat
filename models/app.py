@@ -76,3 +76,54 @@ class App(models.Model):
                     'message': f'{_("Sync organization end")}, {_("success") if is_success else _("failed")}',
                     'warning': True if is_success else False
                 })
+
+    def upload_media(self, app_id, media_type, file_content, filename):
+        """
+        upload temp media to wechat server
+        :param app_id: save at which app server
+        :param media_type: image, voice, video, file
+        :param file_content: file content bytes
+        :param filename: file name
+        :return: media_id in wechat server
+        """
+        app = self.env['wechat.enterprise.app'].sudo().browse(int(app_id))
+        we_request = we_request_instance(app.corp_id, app.secret)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        upload_media_task = loop.create_task(we_request.upload_media(media_type, file_content, filename))
+        loop.run_until_complete(upload_media_task)
+        loop.close()
+        return upload_media_task.result()
+
+    def upload_image(self, app_id, file_content, filename):
+        """
+        upload image to wechat server
+        :param app_id: save at which app server
+        :param file_content: file content bytes
+        :param filename: file name
+        :return: file_url in wechat server
+        """
+        app = self.env['wechat.enterprise.app'].sudo().browse(int(app_id))
+        we_request = we_request_instance(app.corp_id, app.secret)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        upload_img_task = loop.create_task(we_request.upload_image(file_content, filename))
+        loop.run_until_complete(upload_img_task)
+        loop.close()
+        return upload_img_task.result()
+
+    def get_media(self, app_id, media_id):
+        """
+        get media from wechat server
+        :param app_id: save in which app server
+        :param media_id: media id in wechat server
+        :return: file content bytes
+        """
+        app = self.env['wechat.enterprise.app'].sudo().browse(int(app_id))
+        we_request = we_request_instance(app.corp_id, app.secret)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        get_media_task = loop.create_task(we_request.get_media(media_id))
+        loop.run_until_complete(get_media_task)
+        loop.close()
+        return get_media_task.result()

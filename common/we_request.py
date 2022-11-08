@@ -47,30 +47,33 @@ class WeRequest(object):
         return self.token_store.get()
 
     @staticmethod
-    async def get_response(url, params=None):
+    async def get_response(url, params=None, response_callback=None):
         """
         get response from server
         :param url: url join with url_prefix
         :param params:
+        :param response_callback: response callback function
         :return:
         """
         conn = aiohttp.TCPConnector(ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
             async with session.get(url, params=params) as response:
-                return await response.json()
+                return await response_callback(response) if response_callback else await response.json()
 
     @staticmethod
-    async def post_response(url, data):
+    async def post_response(url, json, data=None, response_callback=None):
         """
-        post response to server
+        post response to server, if json is not None, use json, else use data
         :param url: url join with url_prefix
-        :param data:
+        :param data: json data
+        :param json: form data
+        :param response_callback: response callback function
         :return:
         """
         conn = aiohttp.TCPConnector(ssl=False)
         async with aiohttp.ClientSession(connector=conn) as session:
-            async with session.post(url, json=data) as response:
-                return await response.json()
+            async with session.post(url, json=json, data=data) as response:
+                return await response_callback(response) if response_callback else await response.json()
 
     async def get_token(self):
         """
@@ -153,6 +156,54 @@ class WeRequest(object):
             join_url(self.url_prefix, f'message/send?access_token={await self.latest_token()}'), message)
         check_response_error(response)
         return response.get('msgid', None)
+
+    async def upload_media(self, media_type, media_file, filename):
+        """
+        upload temporary media to server, it only save 3 days, the file size has limit,
+        reference: https://developer.work.weixin.qq.com/document/path/91054
+        :param media_type: image, voice, video, file
+        :param media_file: file content bytes
+        :param filename: file name
+        :return: media_id
+        """
+        data = aiohttp.FormData()
+        data.add_field('media', media_file, filename=filename, content_type='application/octet-stream')
+        response = await self.post_response(
+            join_url(self.url_prefix, f'media/upload?access_token={await self.latest_token()}&type={media_type}'),
+            None, data)
+        check_response_error(response)
+        return response.get('media_id', None)
+
+    async def upload_image(self, media_file, filename):
+        """
+        upload image to server, it can save permanently, the file size has limit,
+        reference: https://developer.work.weixin.qq.com/document/path/91054
+        :param media_file: file content bytes
+        :param filename: file name
+        :return: file url
+        """
+        data = aiohttp.FormData()
+        data.add_field(filename, media_file, filename=filename, content_type='application/octet-stream')
+        response = await self.post_response(
+            join_url(self.url_prefix, f'media/uploadimg?access_token={await self.latest_token()}'),
+            None, data)
+        check_response_error(response)
+        return response.get('url', None)
+
+    async def get_media(self, media_id):
+        """
+        get media from server
+        :param media_id: media id
+        :return: media content bytes
+        """
+        async def _cb(res):
+            return await res.read()
+
+        response = await self.get_response(join_url(self.url_prefix, f'media/get'), {
+            'access_token': await self.latest_token(),
+            'media_id': media_id
+        }, response_callback=_cb)
+        return response
 
 
 def we_request_instance(corp_id, secret):

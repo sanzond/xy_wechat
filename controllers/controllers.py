@@ -83,8 +83,6 @@ class WechatEnterprise(http.Controller):
         :param scope: snsapi_base or snsapi_privateinfo
         :return:
         """
-        request.env['hr.employee'].send_we_message(1, ['YinChaoQi'], text={'content': '测试消息消息消息'})
-
         oauth2_info = self.get_we_oauth2_info(app_id)
         corp_id = oauth2_info['corp_id']
         agentid = oauth2_info['agentid']
