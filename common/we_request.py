@@ -157,6 +157,18 @@ class WeRequest(object):
         check_response_error(response)
         return response.get('msgid', None)
 
+    async def recall_message(self, msg_id):
+        """
+        recall message
+        :param msg_id: message id
+        :return:
+        """
+        assert msg_id, 'msg_id is required'
+        response = await self.post_response(
+            join_url(self.url_prefix, f'message/recall?access_token={await self.latest_token()}'), {'msgid': msg_id})
+        check_response_error(response)
+        return response.get('errmsg', None)
+
     async def upload_media(self, media_type, media_file, filename):
         """
         upload temporary media to server, it only save 3 days, the file size has limit,

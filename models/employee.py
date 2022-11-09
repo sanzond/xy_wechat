@@ -130,7 +130,7 @@ class Employee(models.Model):
         :param to_departments: wechat enterprise department we_id list, if to all department, set to '@all'
         :param msgtype: message type, reference https://developer.work.weixin.qq.com/document/path/90236
         :param kwargs: other parameters, reference https://developer.work.weixin.qq.com/document/path/90236
-        :return:
+        :return: message id
         """
         assert app_id, 'app_id is required'
         if len(to_users) == 0 and len(to_departments) == 0:
@@ -149,6 +149,25 @@ class Employee(models.Model):
         )))
         loop.run_until_complete(send_message_task)
         loop.close()
+        return send_message_task.result()
+
+    def recall_we_message(self, app_id, msg_id):
+        """
+        recall message in Wechat Enterprise
+        :param app_id: wechat enterprise app id used to recall message
+        :param msg_id: Has been sent message id
+        :return: True or False
+        """
+        assert app_id, 'app_id is required'
+        assert msg_id, 'msg_id is required'
+        app = self.env['wechat.enterprise.app'].sudo().browse(int(app_id))
+        we_request = we_request_instance(app.corp_id, app.secret)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        recall_message_task = loop.create_task(we_request.recall_message(msg_id))
+        loop.run_until_complete(recall_message_task)
+        loop.close()
+        return recall_message_task.result() == 'ok'
 
     def on_we_create_user(self, xml_tree, company):
         """
