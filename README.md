@@ -71,10 +71,14 @@
 
 ## ❤️ 支持
 
-富能通官网：https://www.funenc.com/
+富能通企业官网：https://www.funenc.com/
 
 免费后端培训视频系列：https://www.bilibili.com/video/BV1rP411G7CZ/
 
 知识星球Odoo源码解读：
 
 <img src="./static/img/knowledge_star.png" style="width: 300px">
+
+更多模块或进群交流欢迎加微信: 
+
+<img src="./static/img/wx_qrcode.png" style="width: 200px">
