@@ -37,6 +37,5 @@
         'views/app.xml',
         'views/log.xml',
     ],
-    'application': True,
-    'license': 'MIT'
+    'application': True
 }
