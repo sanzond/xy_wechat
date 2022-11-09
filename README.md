@@ -68,3 +68,13 @@
 在「员工 - 企业微信模块日志」页面可进行查看  
 
 ![./static/img/log.png](./static/img/log.png)
+
+## ❤️ 支持
+
+富能通官网：https://www.funenc.com/
+
+免费后端培训视频系列：https://www.bilibili.com/video/BV1rP411G7CZ/
+
+知识星球Odoo源码解读：
+
+<img src="./static/img/knowledge_star.png" style="width: 300px">
